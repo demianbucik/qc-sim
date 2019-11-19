@@ -1,5 +1,7 @@
-from collections import deque
+import math
 from abc import abstractmethod
+from collections import deque
+
 import numpy as np
 
 _default_circuit = None
@@ -114,8 +116,42 @@ class Not(Gate):
 
 
 class Hadamard(Gate):
-    def __init__(self, inp):
-        pass
+    def __init__(self, inp, n_bits=1):
+        super().__init__([inp])
+        self.name = 'H^%d' % n_bits
+        self.n_bits = n_bits
+        self.mat = self._get_mat()
+
+    def _get_mat(self):
+        h1 = 1/math.sqrt(2) * np.array([
+            [1, 1],
+            [1, -1]
+        ])
+        h = 1
+        for _ in range(self.n_bits):
+            h = np.kron(h, h1)
+        return h
 
     def eval(self):
-        pass
+        return self.mat @ self.inputs[0].output
+
+
+class Measure(Gate):
+    """ Input is a n-qubit vector of size 2^n
+        Output is a sampled state """
+
+    def __init__(self, inp):
+        super().__init__([inp])
+        self.name = "Measure"
+
+    def eval(self):
+        # Must hold: np.sum(inp.output**2) = 1"
+        # Returns a string representation of n sampled bits, for example: '0101'
+        # Samples according to input qubit vector
+        probs = self.inputs[0].output ** 2
+        states = probs.shape[0]
+        sample = np.random.choice(states, p=probs)
+
+        n_bits = str(int(np.log2(states)))
+        bit_str_template = '{0:0' + n_bits + 'b}'
+        return bit_str_template.format(sample)
