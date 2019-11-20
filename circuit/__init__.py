@@ -1,4 +1,4 @@
-from ._circuit import Circuit, _default_circuit, constant, qubit, Not, Hadamard
+from ._circuit import Circuit, _default_circuit, constant, qubit, Not, Hadamard, OracleMat
 
 
 __all__ = ['Circuit',
@@ -7,4 +7,5 @@ __all__ = ['Circuit',
            'qubit',
            'Not',
            'Hadamard',
+           'OracleMat'
            ]
