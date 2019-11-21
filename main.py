@@ -1,5 +1,5 @@
 import numpy as np
-from circuit import Circuit, constant, Not, Hadamard, OracleMat
+from circuit import Circuit, constant, Id, Not, Hadamard, OracleMat
 
 if __name__ == "__main__":
     """
@@ -41,5 +41,18 @@ if __name__ == "__main__":
 
     qc = Circuit()
     # Start with 2 zero constants qubits
-    x = constant(np.array([0, 1]))
-    y = constant(np.array([0, 1]))
+    x = constant(np.array([1, 0]))
+    y = constant(np.array([1, 0]))
+
+    qc.add_inputs(x, y)
+    qc.add_layer(Id(), Not())
+    qc.add_layer(Hadamard(n_bits=2))
+    qc.add_layer(OracleMat(mat=Uf))
+    qc.add_layer(Hadamard(), Id())
+    qc.add_measure()
+
+    res = qc.run()
+    print(res)
+    print("---------")
+    print(f'state: {qc.state}')
+    print(f'sample: {qc.sample}')
