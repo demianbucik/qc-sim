@@ -1,11 +1,4 @@
-from ._circuit import Circuit, constant, qubit, Id, Not, Hadamard, OracleMat
+from ._circuit import Circuit, Qubit
+from ._gates import Id, X, H, Oracle
 
-
-__all__ = ['Circuit',
-           'constant',
-           'qubit',
-           'Not',
-           'Hadamard',
-           'OracleMat',
-           'Id'
-           ]
+__all__ = ['Circuit', 'Qubit', 'Id', 'X', 'H', 'Oracle']
