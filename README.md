@@ -1,2 +1,2 @@
 # qc-sim
-Quantum computer simulation
+Quantum computing simulator
